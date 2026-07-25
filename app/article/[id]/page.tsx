@@ -1,3 +1,4 @@
+import { auth } from "@clerk/nextjs/server";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ArticleHeader } from "@/components/article/article-header";
@@ -18,6 +19,9 @@ interface PageProps {
 export const revalidate = 0;
 
 export default async function ArticlePage({ params }: PageProps) {
+  const { userId, redirectToSignIn } = await auth();
+  if (!userId) return redirectToSignIn();
+
   const { id } = await params;
   const dbArticle = await getArticleById(id);
   const relatedArticles = await getRelatedArticles(id, 3);
