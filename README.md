@@ -1,5 +1,6 @@
 # 📰 biasly — AI-Powered News Sentiment & Framing Analysis Platform
 
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-Live%20Production-000000?logo=vercel&logoColor=white)](https://fullstackaiwebsitewithagents.vercel.app)
 [![Next.js](https://img.shields.io/badge/Next.js-16.2-black?logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.2-blue?logo=react)](https://react.dev/)
 [![Supabase](https://img.shields.io/badge/Supabase-Database%20%26%20pgvector-3ECF8E?logo=supabase)](https://supabase.com/)
@@ -11,13 +12,20 @@
 
 ---
 
+## 🌐 Live URLs
+
+- **Live Production App**: **[https://fullstackaiwebsitewithagents.vercel.app](https://fullstackaiwebsitewithagents.vercel.app)**
+- **GitHub Repository**: **[https://github.com/Juggernaut576/biasly](https://github.com/Juggernaut576/biasly)**
+
+---
+
 ## ✨ Features
 
 - **📰 Multi-Source News Aggregation**: Automated scraping using the Oxylabs Web Scraper API across major global publications with automatic anti-bot bypass and strict content-gate validation.
 - **🤖 High-Speed AI Analysis**: Powered by Groq Llama 3.3 70B via Vercel AI SDK (`@ai-sdk/groq`) to deliver neutral summaries, sentiment scores, political framing percentages (Left / Center / Right), loaded terms, and framing notes.
 - **🧠 pgvector Similarity Search**: Generates 1536-dimensional vector embeddings for cosine similarity distance matching to display related news coverage across different outlets.
-- **🔐 User Authentication**: Seamless login and signup powered by Clerk with modal authorization and user session state.
-- **⏱️ Automatic Hourly Pipeline**: Oxylabs Scheduler paired with Vercel Cron (`vercel.json`) to scrape homepages and analyze new articles automatically every hour.
+- **🔐 Protected Article Access**: Visitors can browse headline news cards on the public homepage (`/`), while full article content and AI framing analysis (`/article/*`) are strictly protected and require Clerk authentication.
+- **⏱️ Automated Pipeline**: Oxylabs Scheduler paired with Vercel Cron (`vercel.json`) to scrape homepages and analyze new articles automatically.
 - **📊 Integrated Telemetry**: Privacy-first pageview and event analytics powered by PostHog (`posthog-js`).
 - **🎨 Modern Responsive UI**: Built with Next.js 16 App Router, Tailwind CSS, Poppins typography, and custom micro-animations.
 
@@ -27,6 +35,7 @@
 
 | Layer | Technology |
 | :--- | :--- |
+| **Deployment** | [Vercel](https://vercel.com/) |
 | **Framework** | [Next.js 16 (App Router)](https://nextjs.org/) |
 | **Language** | [TypeScript](https://www.typescriptlang.org/) |
 | **Styling** | [Tailwind CSS v4](https://tailwindcss.com/) & [Lucide Icons](https://lucide.dev/) |
@@ -43,7 +52,7 @@
 
 ```mermaid
 graph TD
-    A[News Homepages] -->|Hourly Cron| B(Oxylabs Scheduler)
+    A[News Homepages] -->|Automated Cron| B(Oxylabs Scheduler)
     B -->|Completed HTML| C[Scrape-to-Insert Pipeline]
     D[Manual Admin Trigger] -->|POST /api/scrape| C
     C -->|Extract & Validate| E[Supabase PostgreSQL]
@@ -51,7 +60,7 @@ graph TD
     F -->|Sentiment & 1536-dim Vector| E
     E -->|Cosine Similarity Search| G[pgvector Related Articles]
     E -->|Stored Analyzed Data| H[Next.js App Router UI]
-    H -->|User Session| I[Clerk Auth & PostHog Analytics]
+    H -->|User Session Guard| I[Clerk Auth & PostHog Analytics]
 ```
 
 ---
@@ -148,4 +157,4 @@ All write/action endpoints require the `x-biasly-admin-secret` request header ma
 
 ## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
